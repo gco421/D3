@@ -1,0 +1,127 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\froman\fcharset0 Times-Bold;\f2\fswiss\fcharset0 Helvetica-Bold;
+\f3\fswiss\fcharset0 Helvetica;\f4\fnil\fcharset0 HelveticaNeue-Medium;\f5\fnil\fcharset0 Menlo-Regular;
+\f6\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red97\green84\blue161;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;\cssrgb\c45882\c41961\c69412;
+}
+\margl1440\margr1440\vieww13300\viewh13420\viewkind0
+\deftab720
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f0\fs24 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 Working on figuring out:
+\f1\b \
+
+\f0\b0 -A how to put image in node\ul \
+\ulnone -B how to get data into R\
+-C how to get R to display D3\ul \
+\cf3 \ulc3 \
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://stackoverflow.com/questions/31203720/how-to-place-an-image-in-d3-node"}}{\fldrslt \cf3 \ulc3 https://stackoverflow.com/questions/31203720/how-to-place-an-image-in-d3-node}}\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://jsfiddle.net/zzjebraeil/7byrw3p5/"}}{\fldrslt \cf3 \ulc3 http://jsfiddle.net/zzjebraeil/7byrw3p5/}}
+\f2\b \cf0 \kerning1\expnd0\expndtw0 \ulnone \outl0\strokewidth0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 // add picture
+\f3\b0 \
+  nodeEnter\
+    .append('defs')\
+    .append('pattern')\
+    .attr('id', function(d,i)\{\
+      return 'pic_' + d.fname + d.lname;\
+    \})\
+    .attr('height',60)\
+    .attr('width',60)\
+    .attr('x',0)\
+    .attr('y',0)\
+    .append('image')\
+   
+\f2\b  .attr('xlink:href',function(d,i)\{\
+      return d.photo;\
+    \})
+\f3\b0 \
+    .attr('height',60)\
+    .attr('width',60)\
+    .attr('x',0)\
+    .attr('y',0);\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://naustud.io/tech-stack/"}}{\fldrslt 
+\f0 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \outl0\strokewidth0 \strokec3 https://naustud.io/tech-stack/}}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\b \cf0 // display image as circle icon
+\f3\b0 \
+node.filter(d => String(d.icon).includes('img/'))\
+	.append('image')\
+	.classed('node-icon', true)\
+	.attr('clip-path', d => `url(#clip-$\{d.id\})`)\
+	
+\f2\b .attr('xlink:href', d => d.icon)
+\f3\b0 \
+	.attr('x', d => -d.radius * 0.7)\
+	.attr('y', d => -d.radius * 0.7)\
+	.attr('height', d => d.radius * 2 * 0.7)\
+	.attr('width', d => d.radius * 2 * 0.7);\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://bl.ocks.org/d3noob/8150631"}}{\fldrslt 
+\f0 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \outl0\strokewidth0 \strokec3 http://bl.ocks.org/d3noob/8150631}}
+\f0 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \outl0\strokewidth0 \strokec3 \
+\pard\pardeftab720\sl1120\sa92\partightenfactor0
+
+\f4\fs22 \cf2 \ulnone \strokec2 Adding links to objects\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f5\fs24 \cf2 holder.append(\cf4 \strokec4 "a"\cf2 \strokec2 )\
+    .attr(\cf4 \strokec4 "xlink:href"\cf2 \strokec2 , \cf4 \strokec4 "http://en.wikipedia.org/wiki/"\cf2 \strokec2 +word)\
+\
+# Check if you already installed the package\
+any(grepl("rjson", installed.packages()))\
+\
+\
+#ui object\
+ui <- fluidPage()\
+\
+#server object\
+server <- function(input, output) \{\}\
+\
+shinyApp(ui, server)\
+\
+\
+ui <- fluidPage(\
+  inputPanel(\
+    sliderInput("bar_max", label = "Max:",\
+                min = 4, max = 8, value = 1, step = 0.1)\
+  ),\
+  d3Output("d3")\
+)\
+\
+# Import data from json file\
+jsondata = JsonData <- fromJSON(file= "<graphFile.json>" )\
+\
+server <- function(input, output) \{\
+  output$d3 <- renderD3(\{\
+    r2d3(\
+      JsonData <- fromJSON(file= "<graphFile.json>" ),\
+      script = "pnetwk.js", \
+      css = "style.css"\
+    )\
+  \})\
+\}\
+\
+shinyApp(ui, server)\
+\
+\
+\
+\pard\pardeftab720\sl1120\sa92\partightenfactor0
+
+\f6\fs20 \cf2 \
+\
+\
+}

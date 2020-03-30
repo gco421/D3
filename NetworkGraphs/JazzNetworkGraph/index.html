@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+      body { margin: 0; background-color: #f3f3f3; }
+      #graph { position: absolute; width: 100%; height: 100%; }
+  </style>
+  </head>
+
+  <body>
+    <!-- As you can see, we’ve set aside a <div> in line 8 to hold our graph.  -->
+    <div id="graph"></div>
+    <!-- We’ve also included the JavaScript library as the last part of the <body> element, as that provides the best browser performance. -->
+    <script src="js/sigma.min.js"></script>
+    <!-- So far we’ve manually placed the nodes in our graph in a circle. That’s not a terrible approach, but it can make it hard to discern some of the connections. It would be better if we could let the library calculate a more optimal layout than the simple circle. That’s exactly what we’ll do now.
+
+The mathematics behind this approach is known as force directed graphing. In a nutshell, the algorithm proceeds by treating the graph’s nodes and edges as physical objects subject to real forces such as gravity and electromagnetism. It simulates the effect of those forces, pushing and prodding the nodes into new positions on the graph.
+
+The underlying algorithm may be complicated, but sigmajs makes it easy to employ. First we have to add an optional plugin to the sigmajs library. That’s the forceAtlas2 plugin in line 10 below. -->
+    <script src="js/sigma.layout.forceAtlas2.min.js"></script>
+    <script>
+window.onload = function () {
+var albums = [
+  {
+    album: "Miles Davis - Kind of Blue",
+    musicians: [
+      "Cannonball Adderley",
+      "Paul Chambers",
+      "Jimmy Cobb",
+      "John Coltrane",
+      "Miles Davis",
+      "Bill Evans"
+    ]
+  },{
+    album: "John Coltrane - A Love Supreme",
+    musicians: [
+      "John Coltrane",
+      "Jimmy Garrison",
+      "Elvin Jones",
+      "McCoy Tyner"
+    ]
+  },{
+    album: "The Dave Brubeck Quartet - Time Out",
+    musicians: [
+      "Dave Brubeck",
+      "Paul Desmond",
+      "Joe Morello",
+      "Eugene Write"
+    ]
+  },{
+    album: "Duke Ellington - Ellington at Newport",
+    musicians: [
+      "Harry Carney",
+      "John Willie Cook",
+      "Duke Ellington",
+      "Paul Gonsalves",
+      "Jimmy Grissom",
+      "Jimmy Hamilton",
+      "Johnny Hodges",
+      "Quentin Jackson",
+      "William Anderson",
+      "Ray Nance",
+      "Russell Procope",
+      "John Sanders",
+      "Clark Terry",
+      "James Woode",
+      "Britt Woodman",
+      "Sam Woodyar"
+    ]
+  },{
+    album: "The Quintet - Jazz at Massey Hall",
+    musicians: [
+      "Dizzy Gillespie",
+      "Charles Mingus",
+      "Charlie Parker",
+      "Bud Powell",
+      "Max Roach"
+    ]
+  },{
+    album: "Louis Armstrong - The Best of the Hot Five and Hot Seven Recordings",
+    musicians: [
+      "Lil Hardin Armstrong",
+      "Louis Armstrong",
+      "Clarence Babcock",
+      "Pete Briggs",
+      "Mancy Carr",
+      "Baby Dodds",
+      "Johnny Dodds",
+      "Earl Hines",
+      "Kid Ory",
+      "Don Redman",
+      "Fred Robinson",
+      "Zutty Singleton",
+      "Johnny St. Cyr",
+      "Jimmy Strong",
+      "John Thomas",
+      "Dave Wilborn"
+    ]
+  },{
+    album: "John Coltrane - Blue Trane",
+    musicians: [
+      "Paul Chambers",
+      "John Coltrane",
+      "Kenny Drew",
+      "Curtis Fuller",
+      "Philly Joe Jones",
+      "Lee Morgan"
+    ]
+  },{
+    album: "Stan Getz and João Gilberto - Getz/Gilberto",
+    musicians: [
+      "Milton Banana",
+      "Stan Getz",
+      "Astrud Gilberto",
+      "João Gilberto",
+      "Antonio Carlos Jobim",
+      "Sebastião Neto"
+    ]
+  },{
+    album: "Charles Mingus - Mingus Ah Um",
+    musicians: [
+      "Willie Dennis",
+      "Booker Ervin",
+      "Shafi Hadi",
+      "John Handy",
+      "Jimmy Knepper",
+      "Charles Mingus",
+      "Horace Parlan",
+      "Dannie Richmond"
+    ]
+  },{
+    album: "Erroll Garner - Concert by the Sea",
+    musicians: [
+     "Denzil Best",
+      "Eddie Calhoun",
+      "Erroll Garner"
+    ]
+  },{
+    album: "Miles Davis - Bitches Brew",
+    musicians: [
+      "Don Alias",
+      "Harvey Brooks",
+      "Billy Cobham",
+      "Chick Corea",
+      "Miles Davis",
+      "Jack DeJohnette",
+      "Dave Holland",
+      "Bennie Maupin",
+      "John McLaughlin",
+      "Airto Moreira",
+      "Juma Santos",
+      "Wayne Shorter",
+      "Lenny White",
+      "Larry Young",
+      "Joe Zawinul"
+    ]
+  },{
+    album: "Sonny Rollings - Saxophone Colossus",
+    musicians: [
+      "Tommy Flanagan",
+      "Sonny Rollins",
+      "Max Roach",
+      "Doug Watkins"
+    ]
+  },{
+    album: "Art Blakey and The Jazz Messengers - Moanin’",
+    musicians: [
+      "Art Blakey",
+      "Lee Morgan",
+      "Benny Golson",
+      "Bobby Timmons",
+      "Jymie Merritt"
+    ]
+  },{
+    album: "Clifford Brown and Max Roach",
+    musicians: [
+      "Clifford Brown",
+      "Harold Land",
+      "George Morrow",
+      "Richie Powell",
+      "Max Roach"
+    ]
+  },{
+    album: "Thelonious Monk with John Coltrane - At Carnegie Hall",
+    musicians: [
+      "Ahmed Abdul-Malik",
+      "John Coltrane",
+      "Thelonious Monk",
+      "Shadow Wilson"
+    ]
+  },{
+    album: "Hank Mobley - Soul Station",
+    musicians: [
+      "Art Blakey",
+      "Paul Chambers",
+      "Wynton Kelly",
+      "Hank Mobley"
+    ]
+  },{
+    album: "Cannonball Adderly - Somethin’ Else",
+    musicians: [
+      "Cannonball Adderley",
+      "Art Blakey",
+      "Miles Davis",
+      "Hank Jones",
+      "Sam Jones"
+    ]
+  },{
+    album: "Wayne Shorter - Speak No Evil",
+    musicians: [
+      "Ron Carter",
+      "Herbie Hancock",
+      "Freddie Hubbard",
+      "Elvin Jones",
+      "Wayne Shorter"
+    ]
+  },{
+    album: "Miles Davis - Birth of the Cool",
+    musicians: [
+      "Bill Barber",
+      "Nelson Boyd",
+      "Kenny Clarke",
+      "Junior Collins",
+      "Miles Davis",
+      "Kenny Hagood",
+      "Al Haig",
+      "J. J. Johnson",
+      "Lee Konitz",
+      "John Lewis",
+      "Al McKibbon",
+      "Gerry Mulligan",
+      "Max Roach",
+      "Gunther Schuller",
+      "Joe Shulman",
+      "Sandy Siegelstein",
+      "Kai Winding"
+    ]
+  },{
+    album: "Herbie Hancock - Maiden Voyage",
+    musicians: [
+      "Ron Carter",
+      "George Coleman",
+      "Herbie Hancock",
+      "Freddie Hubbard",
+      "Tony Williams"
+    ]
+  },{
+    album: "Vince Guaraldi Trio- A Boy Named Charlie Brown",
+    musicians: [
+      "Colin Bailey",
+      "Monty Budwig",
+      "Vince Guaraldi"
+    ]
+  },{
+    album: "Eric Dolphy - Out to Lunch",
+    musicians: [
+      "Richard Davis",
+      "Eric Dolphy",
+      "Freddie Hubbard",
+      "Bobby Hutcherson",
+      "Tony Williams"
+    ]
+  },{
+    album: "Oliver Nelson - The Blues and the Abstract Truth",
+    musicians: [
+      "George Barrow",
+      "Paul Chambers",
+      "Eric Dolphy",
+      "Bill Evans",
+      "Roy Haynes",
+      "Freddie Hubbard",
+      "Oliver Nelson"
+    ]
+  },{
+    album: "Dexter Gordon - Go",
+    musicians: [
+      "Sonny Clark",
+      "Dexter Gordon",
+      "Billy Higgins",
+      "Butch Warren"
+    ]
+  },{
+    album: "Sarah Vaughan with Clifford Brown",
+    musicians: [
+      "Joe Benjamin",
+      "Clifford Brown",
+      "Roy Haynes",
+      "Jimmy Jones",
+      "John Malachi",
+      "Herbie Mann",
+      "Paul Quinichette",
+      "Sarah Vaughan",
+      "Ernie Wilkins"
+    ]
+  }
+];
+// Now we’re ready to use the library to construct our graph. We start by initializing the library and indicating where it should construct the graph. That parameter is the id of the <div> element set aside to hold the visualization.
+window.g = new sigma("graph");
+g.settings({
+  defaultNodeColor: '#ec5148',
+  sideMargin: 20
+});
+// Now we can continue by adding the nodes to the graph. In our case, each album is a node. As we add a node to the graph, we give it a unique identifier (which must be a string), a label, and a position. Figuring out an initial position can be a bit tricky for arbitrary data. In a few steps we’ll look at an approach that makes the initial position less critical. For now, though, we’ll simply spread our albums in a circle using basic trigonometry. The radius value is roughly half of the width of the container. We can also give each node a different size, but for our purposes it’s fine to set every album’s size to 1.
+albums.forEach(function(album, idx){
+  var theta = idx*2*Math.PI / albums.length;
+  g.graph.addNode({
+    id: ""+idx, // Note: 'id' must be a string
+    label: album.album,
+    x: Math.sin(theta),
+    y: Math.cos(theta),
+    size: 1
+  });
+ })
+ 
+// Now that we have the nodes drawn in a circle, it’s time to connect them with edges. In our case, an edge—or connection between two albums—represents a musician who performed on both of the albums. To find those edges, we iterate through the albums in four stages.
+
+// Loop through each album as a potential source of a connection (line 1).
+// For the source album, loop through all musicians (line 3).
+// For each musician, loop through all of the remaining albums as potential targets for a connection (line 5).
+// For each target album, loop through all the musicians looking for a match (line 7).
+// For the last step we’re using the some() method of JavaScript arrays. That method takes a function as a parameter, and it returns true if that function itself returns true for any element in the array.
+
+for (var srcIdx=0; srcIdx<albums.length; srcIdx++) {
+  var src = albums[srcIdx];
+  for (var mscIdx=0; mscIdx<src.musicians.length; mscIdx++) {
+    var msc = src.musicians[mscIdx];
+    for (var tgtIdx=srcIdx+1; tgtIdx<albums.length; tgtIdx++) {
+      var tgt = albums[tgtIdx];
+      if (tgt.musicians.some(function(tgtMsc) {return tgtMsc === msc;})) {
+        g.graph.addEdge({
+          id: srcIdx + "." + mscIdx + "-" + tgtIdx,
+          source: ""+srcIdx,
+          target: ""+tgtIdx
+        })
+      }
+    }
+  }
+}
+// We start the force directed algorithm, which periodically refreshes the display while it performs its simulation. We also need to stop the algorithm after it’s had a chance to run for awhile. In our case 1500 ms is plenty of time.
+g.startForceAtlas2();
+setTimeout(function() {g.stopForceAtlas2();}, 1500);
+// Now we need a function that responds to clicks on the node elements. The sigmajs library supports exactly this sort of function with its interface. We simply bind to the clickNode event.
+g.bind('clickNode', function(ev) {
+    // Within that function, the ev.data.node.id property gives us the index of the node that the user clicked. 
+  var nodeIdx = ev.data.node.id;
+  var neighbors = [];
+  g.graph.edges().forEach(function(edge) {
+    if ((edge.target === nodeIdx) || (edge.source === nodeIdx)) {
+      edge.color = '#555';
+      neighbors.push(edge.target);
+      neighbors.push(edge.source);
+    } else {
+      edge.color = '#ec5148';
+    }
+  });
+// We can then scan through all the graph’s edges to see if they connect to the clicked node. If the edge does connect to the node, we can change its color to something other than the default. Otherwise, we change the color back to the default.
+  g.graph.nodes().forEach(function(node) {
+    if (neighbors.some(function(n){return n === node.id})) {
+      node.color = '#555';
+    } else {
+      node.color = '#ec5148';
+    }
+  });
+// Finally, after defining the graph, we tell the library to draw it.
+  g.refresh();
+});
+};
+    </script>
+  </body>
+</html>

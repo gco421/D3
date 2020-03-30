@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    resize: both;
+    overflow: auto;
+}
+
+white-space: nowrap;    
+}
+@font-face {
+    font-family: 'unfpabold';
+    src: url("http://unfpamaldives.github.io/migration/css/unfpa-bold-webfont.eot");
+}
+@font-face {
+    font-family: 'unfpasemibold';
+"    src: url("http://unfpamaldives.github.io/migration/css/unfpa-semibold-webfont.eot");
+}
+@font-face {
+    font-family: 'unfpatext';
+    src: url("http://unfpamaldives.github.io/migration/css/unfpa-text-webfont.eot");
+}
+@font-face {
+    font-family: 'unfpasemibolditalic';
+    src: url("http://unfpamaldives.github.io/migration/css/unfpa-semibolditalic-webfont.eot");
+}
+@font-face {
+    font-family: 'unfpatextitalic';
+    src: url("http://unfpamaldives.github.io/migration/css/unfpa-textitalic-webfont.eot");
+}

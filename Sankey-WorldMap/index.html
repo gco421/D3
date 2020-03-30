@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" rel="stylesheet" type="text/css"/>
+<link href="leaflet.label.css" rel="stylesheet" type="text/css"/>
+
+<link href="app.css" rel="stylesheet" type="text/css"/>
+
+<script>
+
+/* Begin Config */
+var config = {
+    baseMapProvider: 'esri',    // Valid values: esri, osm
+    startLatLng: [3.175, 73.509],
+    startZoom: 9,
+    linePopup: 'hover',                 // Valid values: hover, click
+    datasets: {
+        "Male' and atolls": {
+            linkFile: 'population_sankey_maleandatolls.csv',  // data file name (may include path)
+            weightMin: 1,
+            weightMax: 30,
+            lineColorMode: 'fixed',     // Valid values: fixed, random, weight, atoll or any color name
+            lineColorIn: 'orange',         // Valid values: any color name
+            lineColorOut: 'violet',      // Valid values: any color name
+            skipValueThreshold: 1,
+            skipWeightThreshold: 0,
+            active: true
+        },
+        "To Male'": {
+            linkFile: 'population_sankey_maleonly.csv',  // data file name (may include path)
+            weightMin: 1,
+            weightMax: 40,
+            lineColorMode: 'atoll',     // Valid values: fixed, random, weight, atoll or any color name
+            lineColorIn: 'orange',         // Valid values: any color name
+            lineColorOut: 'violet',      // Valid values: any color name
+            skipValueThreshold: 1,
+            skipWeightThreshold: 0,
+            active: false
+        },
+        "Among atolls": {
+            linkFile: 'population_sankey_wo_male.csv',  // data file name (may include path)
+            weightMin: 1,
+            weightMax: 40,
+            lineColorMode: 'fixed',     // Valid values: fixed, random, weight, atoll or any color name
+            lineColorIn: 'orange',         // Valid values: any color name
+            lineColorOut: 'violet',      // Valid values: any color name
+            skipValueThreshold: 1,
+            skipWeightThreshold: 0,
+            active: false
+        }
+    }
+};
+/* End Config */
+</script>
+</head>
+<body>
+<div id="map"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js"></script>
+<script src="leaflet-providers.js"></script>
+<script src="leaflet.polylinedecorator.min.js"></script>
+<script src="leaflet.label.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
